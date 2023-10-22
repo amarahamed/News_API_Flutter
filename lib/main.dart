@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_api/screens/loading_screen.dart';
 import 'package:news_api/utilities/constants.dart';
+import 'package:news_api/utilities/utilities.dart';
 
 void main() {
   runApp(MaterialApp(

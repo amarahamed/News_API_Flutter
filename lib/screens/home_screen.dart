@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:news_api/screens/news_screen.dart';
 import 'package:news_api/utilities/constants.dart';
-// format date time
-import 'package:intl/intl.dart';
+import 'package:news_api/utilities/utilities.dart';
+import 'package:news_api/utilities/category_text_bubble.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, this.newsData});
@@ -15,50 +16,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   dynamic newsData;
 
-  List<Widget> headlineList = [];
-  List hhh = [];
-
-  void updateUI() {}
-
-  /*
-  * title: Text(x["title"]),
-        leading: Image.network(x["image"]),
-        trailing: Text("${x["source"]["name"]} • ${x["publishedAt"]}"),
-  * */
+  List headlineList = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     newsData = widget.newsData["articles"];
-    hhh = newsData;
-    localTimeConvert(newsData[0]["publishedAt"]);
-    // add headlines to the list
-    // headlineList
-    // for (var x in newsData) {
-    //   headlineList.add(Row(
-    //     children: [
-    //       Image(
-    //         image: NetworkImage(x["image"]),
-    //         width: 100,
-    //         height: 100,
-    //         fit: BoxFit.fill,
-    //       ),
-    //       Column(
-    //         children: [
-    //           Text(x["title"]),
-    //           Text("${x["source"]["name"]} • ${x["publishedAt"]}"),
-    //         ],
-    //       ),
-    //     ],
-    //   ));
-    // }
-  }
-
-  String localTimeConvert(String utcTime) {
-    DateTime utc = DateTime.parse(utcTime);
-
-    return "${DateFormat('MMMM').format(utc)}-${utc.day}-${utc.year}";
+    headlineList = newsData;
   }
 
   @override
@@ -152,17 +117,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 5),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF5555FF).withAlpha(200),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Text(
-                              "General",
-                              style: TextStyle(color: Colors.white),
-                            ),
+                          CategoryTextBubble(
+                            category: "General",
                           ),
                           Container(
                             padding: const EdgeInsets.all(6),
@@ -196,6 +152,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Text(
                                   newsData[0]["title"] ?? "Error Title",
                                   style: kMediumTitleTextStyle,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
                                 ),
                               ],
                             ),
@@ -218,47 +176,65 @@ class _HomeScreenState extends State<HomeScreen> {
 
               // List of all headlines
               Column(
-                children: hhh
-                    .map((e) => Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: Image(
-                                  image: NetworkImage(e["image"]),
-                                  width: 108,
-                                  height: 92,
-                                  fit: BoxFit.fitHeight,
-                                  alignment: Alignment.centerRight,
+                children: headlineList
+                    .map((e) => GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return NewsScreen(
+                                news: e,
+                                category: "General",
+                              );
+                            }));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 18),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image(
+                                    image: NetworkImage(e["image"]),
+                                    width: 118,
+                                    height: 100,
+                                    fit: BoxFit.fitHeight,
+                                    alignment: Alignment.center,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 12,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      e["title"],
+                                const SizedBox(
+                                  width: 12,
+                                ),
+                                Expanded(
+                                  child: SizedBox(
+                                    height: 92,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          e["title"],
+                                          style: kListTileTitleTextStyle,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
+                                        ),
+                                        Text(
+                                          "${e["source"]["name"]}",
+                                          style: kListTileSmallTextStyle,
+                                        ),
+                                        Text(
+                                          localTimeConvert(e["publishedAt"]),
+                                          style: kListTileSmallTextStyle,
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "${e["source"]["name"]} • ${e["publishedAt"]}",
-                                      style: kSmallTitleTextStyle.copyWith(
-                                          color: Colors.black),
-                                    ), // Text(
-                                    //   "${e["source"]["name"]} • ${e["publishedAt"]}",
-                                    //   style: kSmallTitleTextStyle,
-                                    // ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ))
                     .toList(),

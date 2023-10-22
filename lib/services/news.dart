@@ -3,9 +3,7 @@
 * */
 
 import 'package:news_api/services/networker.dart';
-
-const String newsApiKey = "6eed563931144b6f9d1246a4140399d2";
-const String qNewsApiKey = "544f88b6146d2ffa3c1485831ba4b43a";
+import 'package:news_api/utilities/api_keys.dart';
 
 class News {
   String newsAPIURL = "https://newsapi.org/v2/";
@@ -38,17 +36,3 @@ class News {
     return networker.getNews();
   }
 }
-
-/*
-
-  Future<dynamic> getNewsCategoryHeadlines(String category) {
-    // get headlines not for a specific country
-    String url = "${newsAPIURL}top-headlines/sources?apiKey=$apiKey";
-
-    // Get data from Networker by passing URL
-    Networker networker = Networker(qNewsAPIUrl);
-
-    return networker.getNews();
-  }
-
-* */

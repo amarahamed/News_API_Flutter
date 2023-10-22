@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:news_api/screens/home_screen.dart';
 import 'package:news_api/services/news.dart';
-import 'package:news_api/utilities/constants.dart';
+import 'package:news_api/utilities/utilities.dart';
 
 class LoadingScreen extends StatefulWidget {
   LoadingScreen(
