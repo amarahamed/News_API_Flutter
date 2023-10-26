@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_api/screens/news_screen.dart';
+import 'package:news_api/screens/search_screen.dart';
 import 'package:news_api/utilities/constants.dart';
 import 'package:news_api/utilities/container_bubble.dart';
 import 'package:news_api/utilities/utilities.dart';
@@ -90,7 +91,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: kTitleTextTitle,
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const SearchScreen();
+                          }));
+                        },
                         child: const Text(
                           'View all',
                           style: TextStyle(
@@ -118,9 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          CategoryTextBubble(
-                            category: "General",
-                          ),
+                          CategoryTextBubble(category: "General"),
                           ContainerBubble(
                               childWidget: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
