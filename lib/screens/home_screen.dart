@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_api/screens/news_screen.dart';
 import 'package:news_api/utilities/constants.dart';
+import 'package:news_api/utilities/container_bubble.dart';
 import 'package:news_api/utilities/utilities.dart';
 import 'package:news_api/utilities/category_text_bubble.dart';
 
@@ -120,44 +121,38 @@ class _HomeScreenState extends State<HomeScreen> {
                           CategoryTextBubble(
                             category: "General",
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.black26,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: <Widget>[
-                                    Text(newsData[0]["source"]["name"],
+                          ContainerBubble(
+                              childWidget: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: <Widget>[
+                                  Text(newsData[0]["source"]["name"],
+                                      style: kSmallTitleTextStyle.copyWith(
+                                          fontWeight: FontWeight.w500)),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5),
+                                    child: Text("•",
                                         style: kSmallTitleTextStyle.copyWith(
-                                            fontWeight: FontWeight.w500)),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 5),
-                                      child: Text("•",
-                                          style: kSmallTitleTextStyle.copyWith(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w900)),
-                                    ),
-                                    Text(
-                                        localTimeConvert(
-                                            newsData[0]["publishedAt"]),
-                                        style: kSmallTitleTextStyle),
-                                  ],
-                                ),
-                                Text(
-                                  newsData[0]["title"] ?? "Error Title",
-                                  style: kMediumTitleTextStyle,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
-                                ),
-                              ],
-                            ),
-                          ),
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w900)),
+                                  ),
+                                  Text(
+                                      localTimeConvert(
+                                          newsData[0]["publishedAt"]),
+                                      style: kSmallTitleTextStyle),
+                                ],
+                              ),
+                              Text(
+                                newsData[0]["title"] ?? "Error Title",
+                                style: kMediumTitleTextStyle,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3,
+                              ),
+                            ],
+                          )),
                         ],
                       ),
                     ),

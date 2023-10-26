@@ -24,3 +24,11 @@ const kListTileSmallTextStyle = TextStyle(
   fontSize: 10,
   color: Colors.black,
 );
+
+const kBodyTextStyle = TextStyle(
+  fontWeight: FontWeight.normal,
+  fontSize: 14,
+  letterSpacing: 1.2,
+  color: Colors.black,
+  height: 1.8,
+);
