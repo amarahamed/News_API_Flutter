@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:news_api/screens/home_screen.dart';
+import 'package:news_api/screens/search_screen.dart';
 import 'package:news_api/services/news.dart';
 import 'package:news_api/utilities/utilities.dart';
 
 class LoadingScreen extends StatefulWidget {
-  LoadingScreen(
+  const LoadingScreen(
       {super.key,
       required this.newsType,
       this.searchKeyword,
       this.searchCategory});
 
-  Enum newsType;
-  String? searchKeyword;
-  String? searchCategory;
+  final Enum newsType;
+  final String? searchKeyword;
+  final String? searchCategory;
 
   @override
   State<LoadingScreen> createState() => _LoadingScreenState();
@@ -42,16 +43,38 @@ class _LoadingScreenState extends State<LoadingScreen> {
         print("Category searched is null");
       } else {
         // get data
+        print("Category Selected");
         newsData = await News()
-            .getNewsCategoryHeadlines(widget.searchCategory ?? "general");
+            .getNewsCategoryHeadlines(widget.searchCategory ?? "sports");
+
+        print(newsData["articles"][0]);
+
+        Navigator.push(_scaffoldKey.currentContext!,
+            MaterialPageRoute(builder: (context) {
+          return SearchScreen(
+            newsData: newsData,
+          );
+        }));
       }
+    } else if (widget.newsType == NewsType.searchNews) {
+      newsData =
+          await News().getNewsWithKeyword(widget.searchKeyword ?? "example");
+
+      Navigator.push(_scaffoldKey.currentContext!,
+          MaterialPageRoute(builder: (context) {
+        return SearchScreen(
+          newsData: newsData,
+        );
+      }));
     } else {
-      // get data if search keyword is not null
-      if (widget.searchKeyword == null) {
-        print("Search keyword is null");
-      } else {
-        newsData = await News().getNewsWithKeyword(widget.searchKeyword ?? "");
-      }
+      newsData = await News().getNewsHeadlines();
+
+      Navigator.push(_scaffoldKey.currentContext!,
+          MaterialPageRoute(builder: (context) {
+        return SearchScreen(
+          newsData: newsData,
+        );
+      }));
     }
   }
 
@@ -64,6 +87,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey,
       key: _scaffoldKey,
       body: const Center(
         child: SpinKitFoldingCube(

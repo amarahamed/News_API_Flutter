@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:news_api/screens/loading_screen.dart';
 import 'package:news_api/screens/news_screen.dart';
-import 'package:news_api/screens/search_screen.dart';
 import 'package:news_api/utilities/constants.dart';
 import 'package:news_api/utilities/container_bubble.dart';
 import 'package:news_api/utilities/utilities.dart';
@@ -94,7 +94,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return const SearchScreen();
+                            return LoadingScreen(
+                              newsType: NewsType.news,
+                            );
                           }));
                         },
                         child: const Text(

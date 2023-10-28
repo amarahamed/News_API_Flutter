@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:news_api/screens/loading_screen.dart';
-import 'package:news_api/utilities/constants.dart';
 import 'package:news_api/utilities/utilities.dart';
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     theme: ThemeData(
       textTheme: const TextTheme(
         bodySmall: TextStyle(fontFamily: 'Montserrat'),
@@ -12,7 +12,7 @@ void main() {
         bodyLarge: TextStyle(fontFamily: 'Montserrat'),
       ),
     ),
-    home: LoadingScreen(
+    home: const LoadingScreen(
       newsType: NewsType.headlines,
     ),
   ));

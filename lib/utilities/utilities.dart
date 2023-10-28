@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
-enum NewsType { headlines, headlinesCategorized, news }
+enum NewsType { headlines, headlinesCategorized, searchNews, news }
 
 String localTimeConvert(String utcTime) {
   DateTime utc = DateTime.parse(utcTime);

@@ -1,7 +1,3 @@
-/*
-* This class organizes what type of data it needs from the networker - passes url as an argument 
-* */
-
 import 'package:news_api/services/networker.dart';
 import 'package:news_api/utilities/api_keys.dart';
 
@@ -21,7 +17,7 @@ class News {
 
   Future<dynamic> getNewsCategoryHeadlines(String category) {
     String url =
-        "${qNewsAPIURL}top-headlines?category=$category&apikey=$qNewsApiKey&lang=en";
+        "${qNewsAPIURL}top-headlines?category=${category.toLowerCase()}&apikey=$qNewsApiKey&lang=en";
 
     Networker networker = Networker(url);
 
@@ -29,7 +25,8 @@ class News {
   }
 
   Future<dynamic> getNewsWithKeyword(String searchedWord) {
-    String url = "${newsAPIURL}everything?q=$searchedWord&apiKey=$newsApiKey";
+    String url =
+        "${qNewsAPIURL}search?q=\"$searchedWord\"&apikey=$qNewsApiKey&lang=en";
 
     Networker networker = Networker(url);
 

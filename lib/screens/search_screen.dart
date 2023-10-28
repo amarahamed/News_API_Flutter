@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:news_api/screens/loading_screen.dart';
 import 'package:news_api/utilities/constants.dart';
 import 'package:news_api/utilities/utilities.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+  const SearchScreen({super.key, this.newsData});
+
+  final dynamic newsData;
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  dynamic news;
+
   List<String> categories = [
     "All",
     "World",
@@ -22,29 +27,10 @@ class _SearchScreenState extends State<SearchScreen> {
     "Entertainment"
   ];
 
-  late List<Widget> categoryWidgets;
-
   @override
   void initState() {
     super.initState();
-
-    categoryWidgets = categories
-        .map((e) => GestureDetector(
-              onTap: () {
-                print("hello");
-              },
-              child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  decoration: BoxDecoration(
-                      color: Colors.black12,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Text(
-                    e,
-                    style: kListTileSmallTextStyle,
-                  )),
-            ))
-        .toList();
+    news = widget.newsData["articles"];
   }
 
   @override
@@ -83,16 +69,47 @@ class _SearchScreenState extends State<SearchScreen> {
                         alignment: WrapAlignment.start,
                         spacing: 8,
                         runSpacing: 8,
-                        children: categoryWidgets,
+                        children: categories
+                            .map((e) => GestureDetector(
+                                  onTap: () {
+                                    print("----------------> $e");
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return LoadingScreen(
+                                        searchCategory: e,
+                                        newsType: NewsType.headlinesCategorized,
+                                      );
+                                    }));
+                                  },
+                                  child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 6),
+                                      decoration: BoxDecoration(
+                                          color: Colors.black12,
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      child: Text(
+                                        e,
+                                        style: kListTileSmallTextStyle,
+                                      )),
+                                ))
+                            .toList(),
                       ),
                     ),
+                    // Populate News fetched as a list
+                    /*SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return Container();
+                        },
+                        childCount: news,
+                      ),
+                    ),*/
                   ],
                 ),
               ),
             ),
-            // TO:DO get general news data from api by going to LoadingScreen
-            // Using that data Build ListTitle
-            // SliverList(delegate: );
+            // Populate news passed to screen
           ],
         ),
       ),
