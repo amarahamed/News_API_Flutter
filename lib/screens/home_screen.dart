@@ -3,6 +3,8 @@ import 'package:news_api/screens/loading_screen.dart';
 import 'package:news_api/screens/news_screen.dart';
 import 'package:news_api/utilities/constants.dart';
 import 'package:news_api/utilities/container_bubble.dart';
+import 'package:news_api/utilities/drawer_listview.dart';
+import 'package:news_api/utilities/list_container.dart';
 import 'package:news_api/utilities/utilities.dart';
 import 'package:news_api/utilities/category_text_bubble.dart';
 
@@ -52,26 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: kPrimaryBackgroundColor,
-              ),
-              child: Text('News API'),
-            ),
-            ListTile(
-              title: const Text('Home'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-          ],
-        ),
+      drawer: const Drawer(
+        child: DrawerListView(),
       ),
       body: SafeArea(
         child: Padding(
@@ -94,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return LoadingScreen(
+                            return const LoadingScreen(
                               newsType: NewsType.news,
                             );
                           }));
@@ -188,54 +172,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             }));
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 18),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Image(
-                                    image: NetworkImage(e["image"]),
-                                    width: 118,
-                                    height: 100,
-                                    fit: BoxFit.fitHeight,
-                                    alignment: Alignment.center,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 12,
-                                ),
-                                Expanded(
-                                  child: SizedBox(
-                                    height: 92,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          e["title"],
-                                          style: kListTileTitleTextStyle,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 3,
-                                        ),
-                                        Text(
-                                          "${e["source"]["name"]}",
-                                          style: kListTileSmallTextStyle,
-                                        ),
-                                        Text(
-                                          localTimeConvert(e["publishedAt"]),
-                                          style: kListTileSmallTextStyle,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                          child: ListContainer(
+                            news: e,
                           ),
                         ))
                     .toList(),

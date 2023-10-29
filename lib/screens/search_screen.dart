@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:news_api/screens/loading_screen.dart';
 import 'package:news_api/utilities/constants.dart';
+import 'package:news_api/utilities/drawer_listview.dart';
+import 'package:news_api/utilities/list_container.dart';
 import 'package:news_api/utilities/utilities.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -27,30 +29,43 @@ class _SearchScreenState extends State<SearchScreen> {
     "Entertainment"
   ];
 
+  List<dynamic> newsList = [];
+
   @override
   void initState() {
     super.initState();
     news = widget.newsData["articles"];
+    // converts news to a dynamic list
+    for (var e in news) {
+      newsList.add(e);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const Drawer(
+        child: DrawerListView(),
+      ),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              leading: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.menu,
-                    color: Colors.black,
-                  )),
+              leading: Builder(builder: (context) {
+                return IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    icon: const Icon(
+                      Icons.menu,
+                      color: Colors.black,
+                    ));
+              }),
               backgroundColor: Colors.transparent,
             ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
+            SliverPadding(
+              padding: const EdgeInsets.all(15),
+              sliver: SliverToBoxAdapter(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -60,7 +75,15 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                     const Padding(padding: EdgeInsets.only(bottom: 16, top: 8)),
                     TextField(
-                      onChanged: (value) {},
+                      onSubmitted: (value) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return LoadingScreen(
+                            newsType: NewsType.searchNews,
+                            searchKeyword: value,
+                          );
+                        }));
+                      },
                       decoration: textFieldDecoration,
                     ),
                     Padding(
@@ -72,7 +95,6 @@ class _SearchScreenState extends State<SearchScreen> {
                         children: categories
                             .map((e) => GestureDetector(
                                   onTap: () {
-                                    print("----------------> $e");
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (context) {
                                       return LoadingScreen(
@@ -96,20 +118,38 @@ class _SearchScreenState extends State<SearchScreen> {
                             .toList(),
                       ),
                     ),
-                    // Populate News fetched as a list
-                    /*SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          return Container();
-                        },
-                        childCount: news,
-                      ),
-                    ),*/
                   ],
                 ),
               ),
             ),
-            // Populate news passed to screen
+
+            // Populate News fetched as a list
+            newsList.isEmpty
+                ? SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    sliver: SliverToBoxAdapter(
+                      child: Text(
+                        "Search result: 404 - Data not found in the galaxy. 🌌 Try another query or venture into a new category! 🚀✨",
+                        style: kMediumTitleTextStyle.copyWith(
+                          color: Colors.black,
+                          height: 1.4,
+                        ),
+                      ),
+                    ),
+                  )
+                : SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return ListContainer(
+                            news: widget.newsData["articles"][index],
+                          );
+                        },
+                        childCount: newsList.length,
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),

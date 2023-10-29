@@ -22,3 +22,8 @@ var textFieldDecoration = InputDecoration(
     borderRadius: BorderRadius.circular(12),
   ),
 );
+
+var containerBubbleDecoration = BoxDecoration(
+  borderRadius: BorderRadius.circular(12),
+  color: Colors.black38,
+);

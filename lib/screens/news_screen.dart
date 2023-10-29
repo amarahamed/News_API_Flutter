@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_api/utilities/category_text_bubble.dart';
 import 'package:news_api/utilities/constants.dart';
-import 'package:news_api/utilities/container_bubble.dart';
 import 'package:news_api/utilities/utilities.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -62,8 +61,10 @@ class NewsScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    ContainerBubble(
-                      childWidget: Column(
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: containerBubbleDecoration,
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [

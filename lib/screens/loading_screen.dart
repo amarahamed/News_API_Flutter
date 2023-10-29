@@ -43,11 +43,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
         print("Category searched is null");
       } else {
         // get data
-        print("Category Selected");
         newsData = await News()
             .getNewsCategoryHeadlines(widget.searchCategory ?? "sports");
-
-        print(newsData["articles"][0]);
 
         Navigator.push(_scaffoldKey.currentContext!,
             MaterialPageRoute(builder: (context) {
@@ -90,7 +87,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       backgroundColor: Colors.grey,
       key: _scaffoldKey,
       body: const Center(
-        child: SpinKitFoldingCube(
+        child: SpinKitWave(
           color: Colors.white,
           size: 50.0,
         ),
