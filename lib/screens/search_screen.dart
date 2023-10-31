@@ -5,6 +5,8 @@ import 'package:news_api/utilities/drawer_listview.dart';
 import 'package:news_api/utilities/list_container.dart';
 import 'package:news_api/utilities/utilities.dart';
 
+import 'news_screen.dart';
+
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key, this.newsData});
 
@@ -30,6 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
   ];
 
   List<dynamic> newsList = [];
+  String errText = "";
 
   @override
   void initState() {
@@ -75,6 +78,14 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                     const Padding(padding: EdgeInsets.only(bottom: 16, top: 8)),
                     TextField(
+                      maxLength: 20,
+                      onChanged: (value) {
+                        if (value.length >= 20) {
+                          setState(() {
+                            errText = "Maximum 20 characters allowed";
+                          });
+                        }
+                      },
                       onSubmitted: (value) {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
@@ -84,7 +95,9 @@ class _SearchScreenState extends State<SearchScreen> {
                           );
                         }));
                       },
-                      decoration: textFieldDecoration,
+                      decoration: textFieldDecoration.copyWith(
+                        errorText: errText,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 16, bottom: 24),
@@ -98,22 +111,24 @@ class _SearchScreenState extends State<SearchScreen> {
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (context) {
                                       return LoadingScreen(
-                                        searchCategory: e,
+                                        searchCategory:
+                                            e == "Tech" ? "Technology" : e,
                                         newsType: NewsType.headlinesCategorized,
                                       );
                                     }));
                                   },
                                   child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 6),
-                                      decoration: BoxDecoration(
-                                          color: Colors.black12,
-                                          borderRadius:
-                                              BorderRadius.circular(12)),
-                                      child: Text(
-                                        e,
-                                        style: kListTileSmallTextStyle,
-                                      )),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 14, vertical: 8),
+                                    decoration: BoxDecoration(
+                                        color: Colors.black12,
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    child: Text(
+                                      e,
+                                      style: kListTileSmallTextStyle,
+                                    ),
+                                  ),
                                 ))
                             .toList(),
                       ),
@@ -142,8 +157,19 @@ class _SearchScreenState extends State<SearchScreen> {
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
-                          return ListContainer(
-                            news: widget.newsData["articles"][index],
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return NewsScreen(
+                                  news: widget.newsData["articles"][index],
+                                  category: "General",
+                                );
+                              }));
+                            },
+                            child: ListContainer(
+                              news: widget.newsData["articles"][index],
+                            ),
                           );
                         },
                         childCount: newsList.length,

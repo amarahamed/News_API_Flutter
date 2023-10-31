@@ -14,11 +14,17 @@ class DrawerListView extends StatelessWidget {
       // Important: Remove any padding from the ListView.
       padding: EdgeInsets.zero,
       children: [
-        const DrawerHeader(
-          decoration: BoxDecoration(
+        DrawerHeader(
+          decoration: const BoxDecoration(
             color: kPrimaryBackgroundColor,
           ),
-          child: Text('News API'),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'News API',
+              style: kMediumTitleTextStyle.copyWith(color: Colors.black),
+            ),
+          ),
         ),
         ListTile(
           title: const Text('Home'),

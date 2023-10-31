@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
-const kSmallTitleTextStyle =
-    TextStyle(color: Colors.white, fontSize: 10, letterSpacing: 0.8);
+const kSmallTitleTextStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 8,
+  letterSpacing: 0.8,
+  overflow: TextOverflow.fade,
+);
 
 const kMediumTitleTextStyle = TextStyle(color: Colors.white, fontSize: 18);
 
@@ -9,7 +13,7 @@ const kPrimaryBackgroundColor = Color(0xFFF4F4F4);
 
 const kTitleTextTitle = TextStyle(
   fontWeight: FontWeight.w600,
-  fontSize: 20,
+  fontSize: 16,
   color: Colors.black,
 );
 
