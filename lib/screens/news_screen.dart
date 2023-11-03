@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:news_api/utilities/category_text_bubble.dart';
 import 'package:news_api/utilities/constants.dart';
 import 'package:news_api/utilities/utilities.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart' as launcher;
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class NewsScreen extends StatelessWidget {
   final dynamic news;
@@ -10,15 +11,13 @@ class NewsScreen extends StatelessWidget {
 
   const NewsScreen({super.key, this.news, required this.category});
 
-  // launch url
-  Future<void> launchURL() async {
-    // parse
-    final Uri url = Uri.parse(news["url"]);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      // throw Exception("Could not launch URL");
-      print("Couldn't launch url");
+  // docs: https://pub.dev/packages/url_launcher
+  _launchURL() async {
+    // make sure special characters are safe to use for URL
+    final Uri url = Uri.parse(Uri.encodeFull(news["url"]));
+    // if error throws condition becomes true
+    if (!await launcher.launchUrl(url)) {
+      throw Exception("Couldn't load URL");
     }
   }
 
@@ -113,7 +112,19 @@ class NewsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  TextButton(onPressed: () {}, child: const Text("Learn more")),
+                  TextButton(
+                      onPressed: () {
+                        try {
+                          _launchURL();
+                        } catch (e) {
+                          Alert(
+                              context: context,
+                              title: "URL Load error",
+                              desc:
+                                  "We apologize, but we couldn't load the news right now. It seems there's an issue on our end. Please give it another shot later.");
+                        }
+                      },
+                      child: const Text("Learn more")),
                 ],
               ),
             ),
