@@ -25,9 +25,10 @@ class Networker {
       int index = 0;
       for (var x in decodedData["articles"]) {
         final http.Response imgResponse = await http.get(Uri.parse(x["image"]));
-        if (imgResponse.statusCode == 404) {
+        if (imgResponse.statusCode >= 400 && imgResponse.statusCode < 500) {
+          print("Image Not found");
           decodedData["articles"][index]["image"] =
-              "https://www.androkit.com/wp-content/uploads/2022/06/404-Page-Not-Found.webp";
+              "https://img.freepik.com/free-vector/404-error-with-person-looking-concept-illustration_114360-7912.jpg?w=1380&t=st=1698894274~exp=1698894874~hmac=6a69fb5708cf041b94fce103ff93e7664983f688aaad53137d4dc5ba2a61e883";
         }
         index++;
       }

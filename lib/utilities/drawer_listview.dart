@@ -15,8 +15,8 @@ class DrawerListView extends StatelessWidget {
       padding: EdgeInsets.zero,
       children: [
         DrawerHeader(
-          decoration: const BoxDecoration(
-            color: kPrimaryBackgroundColor,
+          decoration: BoxDecoration(
+            color: const Color(0xFF5555FF).withAlpha(200),
           ),
           child: Align(
             alignment: Alignment.centerLeft,

@@ -84,12 +84,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: const Color(0xFF5555FF).withAlpha(200),
       key: _scaffoldKey,
       body: const Center(
         child: SpinKitWave(
           color: Colors.white,
-          size: 50.0,
+          size: 40.0,
         ),
       ),
     );
